@@ -74,22 +74,27 @@ public class RoverActivity extends Activity {
      */
 
     public void goForward(View v) {
-        Arduino.executeCommand(mAdkManager, 0, selectedSpeed);
+        String serialCommand = Arduino.commandBuilder(0, selectedSpeed);
+        Arduino.executeCommand(mAdkManager, serialCommand);
     }
 
     public void goBackward(View v) {
-        Arduino.executeCommand(mAdkManager, 1, selectedSpeed);
+        String serialCommand = Arduino.commandBuilder(1, selectedSpeed);
+        Arduino.executeCommand(mAdkManager, serialCommand);
     }
 
     public void turnLeft(View v) {
-        Arduino.executeCommand(mAdkManager, 2, selectedSpeed);
+        String serialCommand = Arduino.commandBuilder(2, selectedSpeed);
+        Arduino.executeCommand(mAdkManager, serialCommand);
     }
 
     public void turnRight(View v) {
-        Arduino.executeCommand(mAdkManager, 3, selectedSpeed);
+        String serialCommand = Arduino.commandBuilder(3, selectedSpeed);
+        Arduino.executeCommand(mAdkManager, serialCommand);
     }
 
     public void turnBack(View v) {
-        Arduino.executeCommand(mAdkManager, 4, selectedSpeed);
+        String serialCommand = Arduino.commandBuilder(4, selectedSpeed);
+        Arduino.executeCommand(mAdkManager, serialCommand);
     }
 }
