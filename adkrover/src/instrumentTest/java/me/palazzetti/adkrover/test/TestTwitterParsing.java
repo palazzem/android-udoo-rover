@@ -17,6 +17,7 @@ import me.palazzetti.adkrover.utils.Helpers;
 
 public class TestTwitterParsing extends ActivityInstrumentationTestCase2<RoverActivity> {
     private JSONArray tweetList = new JSONArray();
+    private JSONArray tweetListNormalized = new JSONArray();
 
     public TestTwitterParsing() {
         super(RoverActivity.class);
@@ -37,11 +38,29 @@ public class TestTwitterParsing extends ActivityInstrumentationTestCase2<RoverAc
         tweetList.put(Helpers.createMockTweet("This is a more fake tweet"));
         tweetList.put(Helpers.createMockTweet("A F 200"));
 
+        // Create some mock tweets which should be normalized
+        tweetListNormalized.put(Helpers.createMockTweet("F 100"));
+        tweetListNormalized.put(Helpers.createMockTweet("F 100"));
+        tweetListNormalized.put(Helpers.createMockTweet("F 100"));
+        tweetListNormalized.put(Helpers.createMockTweet("F 100"));
+        tweetListNormalized.put(Helpers.createMockTweet("F 100"));
+        tweetListNormalized.put(Helpers.createMockTweet("R 400"));
+        tweetListNormalized.put(Helpers.createMockTweet("R 400"));
+        tweetListNormalized.put(Helpers.createMockTweet("F 100"));
+        tweetListNormalized.put(Helpers.createMockTweet("L 300"));
+        tweetListNormalized.put(Helpers.createMockTweet("L 300"));
+        tweetListNormalized.put(Helpers.createMockTweet("L 300"));
+        tweetListNormalized.put(Helpers.createMockTweet("R 400"));
+        tweetListNormalized.put(Helpers.createMockTweet("B 200"));
+        tweetListNormalized.put(Helpers.createMockTweet("B 200"));
+        tweetListNormalized.put(Helpers.createMockTweet("B 200"));
+        tweetListNormalized.put(Helpers.createMockTweet("B 200"));
     }
 
     @SmallTest
     public void testTweetGeneration() {
         assertEquals(tweetList.length(), 9);
+        assertEquals(tweetListNormalized.length(), 16);
     }
 
     @SmallTest
@@ -54,5 +73,12 @@ public class TestTwitterParsing extends ActivityInstrumentationTestCase2<RoverAc
         assertEquals(serialCommandsList.get(2), "2-300");
         assertEquals(serialCommandsList.get(3), "3-400");
         assertEquals(serialCommandsList.get(4), "4-50");
+    }
+
+    @SmallTest
+    public void testTweetsNormalizingParsing() {
+        List<String> serialCommandsList = TwitterParser.tweetsToCommands(tweetListNormalized);
+
+        assertEquals(serialCommandsList.size(), 13);
     }
 }
