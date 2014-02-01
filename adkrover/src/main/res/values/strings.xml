@@ -2,6 +2,11 @@
 <resources>
 
     <string name="app_name">Android UDOO rover</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="rover_controller">Rover controller</string>
+    <string name="rover_modes">Rover modes</string>
+    <string name="rover_speed">Speed</string>
+    <string name="twitter">Twitter</string>
+    <string name="gaming">Gaming</string>
+    <string name="direction">Direction</string>
 
 </resources>
