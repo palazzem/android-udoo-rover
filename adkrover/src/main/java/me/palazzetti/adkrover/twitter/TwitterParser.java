@@ -15,57 +15,65 @@ import me.palazzetti.adkrover.utils.Helpers;
  */
 
 public class TwitterParser {
-    private static final int NORMALIZE_LIMIT = Integer.MAX_VALUE;
+    private static final int NORMALIZE_LIMIT = 5;
+    private static final int MAX_CONSECUTIVE_COMMANDS = 3;
     private static final List<String> TWITTER_COMMANDS = Arrays.asList("F", "B", "L", "R", "T");
 
     public static List<String> tweetsToCommands(JSONArray tweetList) {
+        boolean normalizationRequired = tweetList.length() >= NORMALIZE_LIMIT;
+        int lastCommandCounter = 0;
+        String serialCommand;
+        String lastCommand = null;
+
         List<String> serialCommandsList = new ArrayList<String>();
-        JSONObject tweet;
-        String tweetText;
-        String serialCommand = null;
 
-        try {
-            if (requireNormalization(tweetList)) {
-                // NotImplemented
-            } else {
-                for (int i = 0; i < tweetList.length(); i++) {
-                    tweet = tweetList.getJSONObject(i);
-                    tweetText = tweet.getString("text");
-                    serialCommand = parseText(tweetText);
+        for (int i = 0; i < tweetList.length(); i++) {
+            try {
+                serialCommand = parseText(tweetList.getJSONObject(i).getString("text"));
 
-                    if (serialCommand != null) {
-                        serialCommandsList.add(serialCommand);
+                // Avoid too much occurrence of the same command
+                if (normalizationRequired) {
+                    if (serialCommand.equals(lastCommand)) {
+                        lastCommandCounter++;
+                    } else {
+                        lastCommandCounter = 0;
+                        lastCommand = serialCommand;
+                    }
+
+                    if (lastCommandCounter >= MAX_CONSECUTIVE_COMMANDS) {
+                        continue;
                     }
                 }
+
+                serialCommandsList.add(serialCommand);
+
+            } catch (JSONException e) {
+                // Exclude this command execution cause of malformed JSON
+                e.printStackTrace();
+            } catch (MalformedTwitterCommand e) {
+                // Exclude this command execution cause of malformed Twitter command
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            // If JSON parsing error occurs, avoid any command execution
-            serialCommandsList.clear();
         }
 
         return serialCommandsList;
     }
 
-    private static boolean requireNormalization(JSONArray tweetList) {
-        return tweetList.length() >= NORMALIZE_LIMIT;
-    }
-
-    private static String parseText(String tweetText) {
-        int command;
-        int speed;
-        String serialCommand = null;
+    private static String parseText(String tweetText) throws MalformedTwitterCommand {
+        int command = -1;
+        int speed = 0;
 
         String[] splitTweet = tweetText.split(" ");
 
         if (splitTweet.length == 2) {
             command = TWITTER_COMMANDS.indexOf(splitTweet[0]);
             speed = Helpers.isInteger(splitTweet[1]) ? Integer.valueOf(splitTweet[1]) : 0;
-
-            if (command >= 0 && speed > 0) {
-                serialCommand = Arduino.commandBuilder(command, speed);
-            }
         }
 
-        return serialCommand;
+        if (command < 0 || speed <= 0) {
+            throw new MalformedTwitterCommand("Malformed Twitter command");
+        }
+
+        return Arduino.commandBuilder(command, speed);
     }
 }
