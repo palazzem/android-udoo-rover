@@ -1,24 +1,22 @@
 package me.palazzetti.adkrover.test;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
-import android.util.Log;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.util.List;
 
 import me.palazzetti.adkrover.RoverActivity;
 import me.palazzetti.adkrover.twitter.TwitterParser;
+import me.palazzetti.adkrover.utils.Helpers;
 
 /**
  * Parses a Twitter JSONArray and produce the correct sequence of commands.
  */
 
 public class TestTwitterParsing extends ActivityInstrumentationTestCase2<RoverActivity> {
-    private JSONArray tweetList;
+    private JSONArray tweetList = new JSONArray();
 
     public TestTwitterParsing() {
         super(RoverActivity.class);
@@ -28,36 +26,17 @@ public class TestTwitterParsing extends ActivityInstrumentationTestCase2<RoverAc
     protected void setUp() throws Exception {
         super.setUp();
 
-        String mockTweet = "[" +
-                "{'id': 240859602684612608, " +
-                "'text': 'F 100'}," +
-                "{'id': 240859602684612609, " +
-                "'text': 'B 200'}," +
-                "{'id': 240859602684612610, " +
-                "'text': 'L 300'}," +
-                "{'id': 240859602684612611, " +
-                "'text': 'R 400'}," +
-                "{'id': 240859602684612612, " +
-                "'text': 'T 0'}," +
-                "{'id': 240859602684612612, " +
-                "'text': 'T 50'}," +
-                "{'id': 240859602684612613, " +
-                "'text': 'Fake tweet'}," +
-                "{'id': 240859602684612614, " +
-                "'text': 'This is a more fake tweet'}," +
-                "{'id': 240859602684612615, " +
-                "'text': 'A F 200'}" +
-                "]";
+        // Create some mock tweets
+        tweetList.put(Helpers.createMockTweet("F 100"));
+        tweetList.put(Helpers.createMockTweet("B 200"));
+        tweetList.put(Helpers.createMockTweet("L 300"));
+        tweetList.put(Helpers.createMockTweet("R 400"));
+        tweetList.put(Helpers.createMockTweet("T 0"));
+        tweetList.put(Helpers.createMockTweet("T 50"));
+        tweetList.put(Helpers.createMockTweet("Fake tweet"));
+        tweetList.put(Helpers.createMockTweet("This is a more fake tweet"));
+        tweetList.put(Helpers.createMockTweet("A F 200"));
 
-        JSONArray tweetList;
-        try {
-            tweetList = new JSONArray(mockTweet);
-        } catch (JSONException e) {
-            tweetList = new JSONArray();
-            Log.e("Rover", e.getMessage());
-        }
-
-        this.tweetList = tweetList;
     }
 
     @SmallTest
