@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -66,5 +67,29 @@ public class RoverActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mAdkManager.getUsbReceiver());
+    }
+
+    /**
+     * View interaction
+     */
+
+    public void goForward(View v) {
+        Arduino.executeCommand(mAdkManager, 0, selectedSpeed);
+    }
+
+    public void goBackward(View v) {
+        Arduino.executeCommand(mAdkManager, 1, selectedSpeed);
+    }
+
+    public void turnLeft(View v) {
+        Arduino.executeCommand(mAdkManager, 2, selectedSpeed);
+    }
+
+    public void turnRight(View v) {
+        Arduino.executeCommand(mAdkManager, 3, selectedSpeed);
+    }
+
+    public void turnBack(View v) {
+        Arduino.executeCommand(mAdkManager, 4, selectedSpeed);
     }
 }
