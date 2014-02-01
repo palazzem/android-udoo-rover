@@ -68,6 +68,7 @@
 
             <TextView
                 style="@style/Title"
+                android:id="@+id/speed_text"
                 android:text="@string/rover_speed"/>
 
             <SeekBar

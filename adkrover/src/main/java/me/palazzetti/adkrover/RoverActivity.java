@@ -4,11 +4,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import me.palazzetti.adkrover.adktoolkit.AdkManager;
+import me.palazzetti.adkrover.arduino.Arduino;
 
 public class RoverActivity extends Activity {
     private AdkManager mAdkManager;
+    private SeekBar mSpeedBar;
+    private TextView mSpeedText;
+
+    private int selectedSpeed = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +25,29 @@ public class RoverActivity extends Activity {
         // Start ADK Manager
         mAdkManager = new AdkManager((UsbManager) getSystemService(Context.USB_SERVICE));
         registerReceiver(mAdkManager.getUsbReceiver(), mAdkManager.getDetachedFilter());
+
+        // Widget assignment
+        mSpeedText = (TextView) findViewById(R.id.speed_text);
+        mSpeedText.setText(getResources().getString(R.string.rover_speed) + "0");
+
+        mSpeedBar = (SeekBar) findViewById(R.id.speed_bar);
+        mSpeedBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mSpeedText.setText(getResources().getString(R.string.rover_speed) + String.valueOf(progress));
+                selectedSpeed = progress;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // noop
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // noop
+            }
+        });
     }
 
     @Override
