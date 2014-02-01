@@ -4,7 +4,7 @@ Android UDOO rover
 
 Android app with ADK support to send/receive commands to/from Arduino rover with MC33926 motor shield. Powered by UDOO prototyping board.
 
-Documentationg
+Documentation
 -------------
 
 Available soon.
