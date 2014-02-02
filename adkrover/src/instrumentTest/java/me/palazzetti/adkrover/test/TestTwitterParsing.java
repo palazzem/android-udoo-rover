@@ -31,12 +31,12 @@ public class TestTwitterParsing extends ActivityInstrumentationTestCase2<RoverAc
         tweetList.put(Helpers.createMockTweet("@Username F 100"));
         tweetList.put(Helpers.createMockTweet("@Username B 200"));
         tweetList.put(Helpers.createMockTweet("@Username L 300"));
-        tweetList.put(Helpers.createMockTweet("@Username R 400"));
-        tweetList.put(Helpers.createMockTweet("@Username T 0"));
-        tweetList.put(Helpers.createMockTweet("@Username T 50"));
+        tweetList.put(Helpers.createMockTweet("@Username r 400"));
+        tweetList.put(Helpers.createMockTweet("@Username t 0"));
+        tweetList.put(Helpers.createMockTweet("@Username t 50"));
         tweetList.put(Helpers.createMockTweet("@Username Fake tweet"));
-        tweetList.put(Helpers.createMockTweet("@Username This is a more fake tweet"));
-        tweetList.put(Helpers.createMockTweet("@Username A F 200"));
+        tweetList.put(Helpers.createMockTweet("This is a more fake tweet"));
+        tweetList.put(Helpers.createMockTweet("@Username Another 200"));
 
         // Create some mock tweets which should be normalized
         tweetListNormalized.put(Helpers.createMockTweet("@Username F 100"));

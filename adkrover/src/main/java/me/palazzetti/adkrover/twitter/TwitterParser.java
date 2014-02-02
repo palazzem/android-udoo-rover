@@ -17,7 +17,7 @@ import me.palazzetti.adkrover.utils.Helpers;
 public class TwitterParser {
     private static final int NORMALIZE_LIMIT = 5;
     private static final int MAX_CONSECUTIVE_COMMANDS = 3;
-    private static final List<String> TWITTER_COMMANDS = Arrays.asList("F", "B", "L", "R", "T");
+    private static final List<String> TWITTER_COMMANDS = Arrays.asList("f", "b", "l", "r", "t");
 
     public static List<String> tweetsToCommands(JSONArray tweetList) {
         boolean normalizationRequired = tweetList.length() >= NORMALIZE_LIMIT;
@@ -66,7 +66,7 @@ public class TwitterParser {
         String[] splitTweet = tweetText.split(" ");
 
         if (splitTweet.length == 3) {
-            command = TWITTER_COMMANDS.indexOf(splitTweet[1]);
+            command = TWITTER_COMMANDS.indexOf(splitTweet[1].toLowerCase());
             speed = Helpers.isInteger(splitTweet[2]) ? Integer.valueOf(splitTweet[2]) : 0;
         }
 
