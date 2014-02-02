@@ -25,8 +25,9 @@
                 style="@style/Title"
                 android:text="@string/direction" />
 
-            <Button
-                android:text="F"
+            <ImageButton
+                android:src="@drawable/arrow_up"
+                android:contentDescription="@string/direction_forward"
                 android:id="@+id/cmd_forward"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -34,8 +35,9 @@
                 android:layout_centerHorizontal="true"
                 android:onClick="goForward" />
 
-            <Button
-                android:text="B"
+            <ImageButton
+                android:src="@drawable/arrow_back"
+                android:contentDescription="@string/direction_backward"
                 android:id="@+id/cmd_backward"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,8 +45,9 @@
                 android:layout_toRightOf="@+id/cmd_left"
                 android:onClick="goBackward" />
 
-            <Button
-                android:text="R"
+            <ImageButton
+                android:src="@drawable/arrow_right"
+                android:contentDescription="@string/direction_right"
                 android:id="@+id/cmd_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,8 +55,9 @@
                 android:layout_toRightOf="@+id/cmd_forward"
                 android:onClick="turnRight" />
 
-            <Button
-                android:text="L"
+            <ImageButton
+                android:src="@drawable/arrow_left"
+                android:contentDescription="@string/direction_left"
                 android:id="@+id/cmd_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -99,14 +103,11 @@
 
         <Button
             android:text="@string/twitter"
+            android:drawableLeft="@drawable/twitter_logo_small"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="startTwitterCommandsFetch"/>
-
-        <Button
-            android:text="@string/gaming"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
