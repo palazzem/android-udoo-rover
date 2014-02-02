@@ -8,5 +8,6 @@
     <string name="twitter">Twitter</string>
     <string name="gaming">Gaming</string>
     <string name="direction">Direction</string>
+    <string name="not_online">Connection not available!</string>
 
 </resources>
