@@ -30,6 +30,7 @@ public class TwitterReceiver {
 
     private final static String TOKEN_ENDPOINT = "https://api.twitter.com/oauth2/token";
     private final static String TIMELINE_API = "https://api.twitter.com/1.1/statuses/user_timeline.json?";
+    private final static String SEARCH_API = "https://api.twitter.com/1.1/search/tweets.json?";
 
     private String bearerToken = null;
 
@@ -47,6 +48,22 @@ public class TwitterReceiver {
         }
 
         return twitterTimeline;
+    }
+
+    public JSONArray searchMentions(String username, String lastId) {
+        JSONArray twitterMentions = null;
+
+        // In a production environment remember to store it in SharedPreferences instead in memory
+        // as stated here: http://developer.android.com/guide/topics/data/data-storage.html#pref
+        if (bearerToken == null) {
+            bearerToken = getBearerToken();
+        }
+
+        if (bearerToken != null) {
+            twitterMentions = getTwitterMentions(username, lastId);
+        }
+
+        return twitterMentions;
     }
 
     private String getBearerToken() {
@@ -116,11 +133,52 @@ public class TwitterReceiver {
         return results;
     }
 
+    private JSONArray getTwitterMentions(String username, String lastId) {
+        JSONArray results = null;
+
+        try {
+            // Requires Twitter timeline
+            UrlConnector twitterConnector = new UrlConnector(searchWithFilters(username, lastId));
+            twitterConnector.addHeader("Content-Type", "application/json");
+            twitterConnector.addHeader("Authorization", "Bearer " + bearerToken);
+
+            // Do GET and grab tweets into a JSONArray
+            int statusCode = twitterConnector.get();
+
+            Log.d(TAG_LOG, String.valueOf(statusCode));
+
+            if (statusCode == HttpURLConnection.HTTP_OK) {
+                results = new JSONObject(twitterConnector.getResponse()).getJSONArray("statuses");
+            }
+
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG_LOG, e.getMessage());
+        } catch (IllegalStateException e) {
+            Log.e(TAG_LOG, e.getMessage());
+        } catch (MalformedURLException e) {
+            Log.e(TAG_LOG, e.getMessage());
+        } catch (IOException e) {
+            Log.e(TAG_LOG, e.getMessage());
+        } catch (JSONException e) {
+            Log.e(TAG_LOG, e.getMessage());
+        }
+
+        return results;
+    }
+
     private String timelineWithFilters(String username, String lastId) {
         List<BasicNameValuePair> parameters = Arrays.asList(
                 new BasicNameValuePair("screen_name", username),
                 new BasicNameValuePair("since_id", lastId));
 
         return TIMELINE_API + URLEncodedUtils.format(parameters, "UTF-8");
+    }
+
+    private String searchWithFilters(String username, String lastId) {
+        List<BasicNameValuePair> parameters = Arrays.asList(
+                new BasicNameValuePair("q", "@" + username),
+                new BasicNameValuePair("since_id", lastId));
+
+        return SEARCH_API + URLEncodedUtils.format(parameters, "UTF-8");
     }
 }
