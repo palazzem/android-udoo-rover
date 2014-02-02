@@ -3,7 +3,6 @@ package me.palazzetti.adkrover.utils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -32,19 +31,6 @@ public class UrlConnector {
     public int get() throws ProtocolException, IOException {
         mConnector.setRequestMethod("GET");
         mConnector.setDoInput(true);
-
-        return mConnector.getResponseCode();
-    }
-
-    public int post(String parameters) throws ProtocolException, IOException {
-        mConnector.setRequestMethod("POST");
-        mConnector.setDoOutput(true);
-        mConnector.setFixedLengthStreamingMode(parameters.getBytes().length);
-
-        // Make the post
-        PrintWriter output = new PrintWriter(mConnector.getOutputStream());
-        output.print(parameters);
-        output.close();
 
         return mConnector.getResponseCode();
     }

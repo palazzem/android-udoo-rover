@@ -2,6 +2,7 @@ package me.palazzetti.adkrover;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.hardware.usb.UsbManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -24,12 +25,16 @@ import me.palazzetti.adkrover.twitter.TwitterParser;
 import me.palazzetti.adkrover.twitter.TwitterReceiver;
 
 public class RoverActivity extends Activity {
-    private AdkManager mAdkManager;
-    private AsyncTwitterReceiver mAsyncReceiver = null;
-    private SeekBar mSpeedBar;
-    private TextView mSpeedText;
+    private static final String PREFS_NAME = "DroidRover";
 
-    private int selectedSpeed = 0;
+    private AsyncTwitterReceiver mAsyncReceiver = null;
+    private AdkManager mAdkManager;
+    private TextView mSpeedText;
+    private SeekBar mSpeedBar;
+
+    private int mSelectedSpeed = 0;
+    private long mLastFetchedId;
+    private boolean mKeepAlive;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +47,14 @@ public class RoverActivity extends Activity {
 
         // Widget assignment
         mSpeedText = (TextView) findViewById(R.id.speed_text);
-        mSpeedText.setText(getResources().getString(R.string.rover_speed) + "0");
+        mSpeedText.setText(getResources().getString(R.string.rover_speed) + mSelectedSpeed);
 
         mSpeedBar = (SeekBar) findViewById(R.id.speed_bar);
         mSpeedBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mSpeedText.setText(getResources().getString(R.string.rover_speed) + String.valueOf(progress));
-                selectedSpeed = progress;
+                mSelectedSpeed = progress;
             }
 
             @Override
@@ -62,6 +67,10 @@ public class RoverActivity extends Activity {
                 // noop
             }
         });
+
+        // Get last stored values
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        mLastFetchedId = settings.getLong("lastId", 1);
     }
 
     @Override
@@ -77,6 +86,14 @@ public class RoverActivity extends Activity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putLong("lastId", mLastFetchedId);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mAdkManager.getUsbReceiver());
@@ -87,27 +104,27 @@ public class RoverActivity extends Activity {
      */
 
     public void goForward(View v) {
-        String serialCommand = Arduino.commandBuilder(0, selectedSpeed);
+        String serialCommand = Arduino.commandBuilder(0, mSelectedSpeed);
         Arduino.executeCommand(mAdkManager, serialCommand);
     }
 
     public void goBackward(View v) {
-        String serialCommand = Arduino.commandBuilder(1, selectedSpeed);
+        String serialCommand = Arduino.commandBuilder(1, mSelectedSpeed);
         Arduino.executeCommand(mAdkManager, serialCommand);
     }
 
     public void turnLeft(View v) {
-        String serialCommand = Arduino.commandBuilder(2, selectedSpeed);
+        String serialCommand = Arduino.commandBuilder(2, mSelectedSpeed);
         Arduino.executeCommand(mAdkManager, serialCommand);
     }
 
     public void turnRight(View v) {
-        String serialCommand = Arduino.commandBuilder(3, selectedSpeed);
+        String serialCommand = Arduino.commandBuilder(3, mSelectedSpeed);
         Arduino.executeCommand(mAdkManager, serialCommand);
     }
 
     public void turnBack(View v) {
-        String serialCommand = Arduino.commandBuilder(4, selectedSpeed);
+        String serialCommand = Arduino.commandBuilder(4, mSelectedSpeed);
         Arduino.executeCommand(mAdkManager, serialCommand);
     }
 
@@ -116,10 +133,15 @@ public class RoverActivity extends Activity {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            // Start Twitter "game" once
             if (mAsyncReceiver == null) {
+                // Start Twitter "game"
+                mKeepAlive = true;
                 mAsyncReceiver = new AsyncTwitterReceiver();
                 mAsyncReceiver.execute();
+            } else {
+                // Stop Twitter "game"
+                mKeepAlive = false;
+                mAsyncReceiver = null;
             }
         } else {
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.not_online), Toast.LENGTH_LONG).show();
@@ -128,32 +150,30 @@ public class RoverActivity extends Activity {
 
     public class AsyncTwitterReceiver extends AsyncTask<Void, String, Void> {
         private final static String TAG_LOG = "RoverAsyncReceiver";
-        private String lastFetchedId = "1";
 
         @Override
         protected Void doInBackground(Void... params) {
             JSONArray twitterCommands;
 
             try {
-                while (true) {
-                    publishProgress("Start fetching");
-                    twitterCommands = new TwitterReceiver().searchMentions("DroidRover", lastFetchedId);
+                TwitterReceiver twitterReceiver = new TwitterReceiver();
+                publishProgress(getResources().getString(R.string.start_fetching));
+
+                while (mKeepAlive) {
+                    twitterCommands = twitterReceiver.getTwitterStream(mLastFetchedId);
 
                     if (twitterCommands.length() > 0) {
-                        // Store the last one
-                        lastFetchedId = twitterCommands.getJSONObject(0).getString("id_str");
-
+                        mLastFetchedId = twitterCommands.getJSONObject(0).getLong("id");
                         List<String> serialCommandsList = TwitterParser.tweetsToCommands(twitterCommands);
 
-                        publishProgress("Start executing");
+                        publishProgress(getResources().getString(R.string.start_execution));
                         for (String serialCommand : serialCommandsList) {
                             mAdkManager.sendText(serialCommand);
                         }
-
-                        publishProgress("Finished executing");
                     }
+
+                    // Wait before next polling
                     Thread.sleep(5000);
-                    publishProgress("Waking up!");
                 }
             } catch (JSONException e) {
                 Log.e(TAG_LOG, e.getMessage());
