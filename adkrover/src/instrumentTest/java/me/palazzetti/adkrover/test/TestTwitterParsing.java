@@ -28,33 +28,33 @@ public class TestTwitterParsing extends ActivityInstrumentationTestCase2<RoverAc
         super.setUp();
 
         // Create some mock tweets
-        tweetList.put(Helpers.createMockTweet("F 100"));
-        tweetList.put(Helpers.createMockTweet("B 200"));
-        tweetList.put(Helpers.createMockTweet("L 300"));
-        tweetList.put(Helpers.createMockTweet("R 400"));
-        tweetList.put(Helpers.createMockTweet("T 0"));
-        tweetList.put(Helpers.createMockTweet("T 50"));
-        tweetList.put(Helpers.createMockTweet("Fake tweet"));
-        tweetList.put(Helpers.createMockTweet("This is a more fake tweet"));
-        tweetList.put(Helpers.createMockTweet("A F 200"));
+        tweetList.put(Helpers.createMockTweet("@Username F 100"));
+        tweetList.put(Helpers.createMockTweet("@Username B 200"));
+        tweetList.put(Helpers.createMockTweet("@Username L 300"));
+        tweetList.put(Helpers.createMockTweet("@Username R 400"));
+        tweetList.put(Helpers.createMockTweet("@Username T 0"));
+        tweetList.put(Helpers.createMockTweet("@Username T 50"));
+        tweetList.put(Helpers.createMockTweet("@Username Fake tweet"));
+        tweetList.put(Helpers.createMockTweet("@Username This is a more fake tweet"));
+        tweetList.put(Helpers.createMockTweet("@Username A F 200"));
 
         // Create some mock tweets which should be normalized
-        tweetListNormalized.put(Helpers.createMockTweet("F 100"));
-        tweetListNormalized.put(Helpers.createMockTweet("F 100"));
-        tweetListNormalized.put(Helpers.createMockTweet("F 100"));
-        tweetListNormalized.put(Helpers.createMockTweet("F 100"));
-        tweetListNormalized.put(Helpers.createMockTweet("F 100"));
-        tweetListNormalized.put(Helpers.createMockTweet("R 400"));
-        tweetListNormalized.put(Helpers.createMockTweet("R 400"));
-        tweetListNormalized.put(Helpers.createMockTweet("F 100"));
-        tweetListNormalized.put(Helpers.createMockTweet("L 300"));
-        tweetListNormalized.put(Helpers.createMockTweet("L 300"));
-        tweetListNormalized.put(Helpers.createMockTweet("L 300"));
-        tweetListNormalized.put(Helpers.createMockTweet("R 400"));
-        tweetListNormalized.put(Helpers.createMockTweet("B 200"));
-        tweetListNormalized.put(Helpers.createMockTweet("B 200"));
-        tweetListNormalized.put(Helpers.createMockTweet("B 200"));
-        tweetListNormalized.put(Helpers.createMockTweet("B 200"));
+        tweetListNormalized.put(Helpers.createMockTweet("@Username F 100"));
+        tweetListNormalized.put(Helpers.createMockTweet("@Username F 100"));
+        tweetListNormalized.put(Helpers.createMockTweet("@Username F 100"));
+        tweetListNormalized.put(Helpers.createMockTweet("@Username F 100"));
+        tweetListNormalized.put(Helpers.createMockTweet("@Username F 100"));
+        tweetListNormalized.put(Helpers.createMockTweet("@Username R 400"));
+        tweetListNormalized.put(Helpers.createMockTweet("@Username R 400"));
+        tweetListNormalized.put(Helpers.createMockTweet("@Username F 100"));
+        tweetListNormalized.put(Helpers.createMockTweet("@Username L 300"));
+        tweetListNormalized.put(Helpers.createMockTweet("@Username L 300"));
+        tweetListNormalized.put(Helpers.createMockTweet("@Username L 300"));
+        tweetListNormalized.put(Helpers.createMockTweet("@Username R 400"));
+        tweetListNormalized.put(Helpers.createMockTweet("@Username B 200"));
+        tweetListNormalized.put(Helpers.createMockTweet("@Username B 200"));
+        tweetListNormalized.put(Helpers.createMockTweet("@Username B 200"));
+        tweetListNormalized.put(Helpers.createMockTweet("@Username B 200"));
     }
 
     @SmallTest

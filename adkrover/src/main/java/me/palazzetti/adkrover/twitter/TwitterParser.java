@@ -65,9 +65,9 @@ public class TwitterParser {
 
         String[] splitTweet = tweetText.split(" ");
 
-        if (splitTweet.length == 2) {
-            command = TWITTER_COMMANDS.indexOf(splitTweet[0]);
-            speed = Helpers.isInteger(splitTweet[1]) ? Integer.valueOf(splitTweet[1]) : 0;
+        if (splitTweet.length == 3) {
+            command = TWITTER_COMMANDS.indexOf(splitTweet[1]);
+            speed = Helpers.isInteger(splitTweet[2]) ? Integer.valueOf(splitTweet[2]) : 0;
         }
 
         if (command < 0 || speed <= 0) {
