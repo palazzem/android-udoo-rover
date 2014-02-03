@@ -88,9 +88,16 @@ public class RoverActivity extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
+
+        // Store last tweet
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putLong("lastId", mLastFetchedId);
+        editor.commit();
+
+        // Turn off AsyncReceiver
+        mKeepAlive = false;
+        mAsyncReceiver = null;
     }
 
     @Override
@@ -163,22 +170,26 @@ public class RoverActivity extends Activity {
                     twitterCommands = twitterReceiver.getTwitterStream(mLastFetchedId);
 
                     if (twitterCommands.length() > 0) {
-                        mLastFetchedId = twitterCommands.getJSONObject(0).getLong("id");
+                        // Last tweet is the newest
+                        mLastFetchedId = twitterCommands.getJSONObject(0).getLong("tweet_id");
                         List<String> serialCommandsList = TwitterParser.tweetsToCommands(twitterCommands);
 
                         publishProgress(getResources().getString(R.string.start_execution));
                         for (String serialCommand : serialCommandsList) {
+                            Log.d(TAG_LOG, "Executing: " + serialCommand);
                             mAdkManager.sendText(serialCommand);
                         }
                     }
 
                     // Wait before next polling
-                    Thread.sleep(5000);
+                    Thread.sleep(1000);
                 }
             } catch (JSONException e) {
                 Log.e(TAG_LOG, e.getMessage());
             } catch (InterruptedException e) {
                 Log.e(TAG_LOG, e.getMessage());
+            } finally {
+                publishProgress(getResources().getString(R.string.stop_fetching));
             }
 
             return null;

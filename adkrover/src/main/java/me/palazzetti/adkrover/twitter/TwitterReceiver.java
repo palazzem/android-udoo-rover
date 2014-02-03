@@ -6,7 +6,6 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -23,7 +22,7 @@ import me.palazzetti.adkrover.utils.UrlConnector;
 
 public class TwitterReceiver {
     private final static String TAG_LOG = "RoverNetwork";
-    private final static String STREAM_API = "http://";
+    private final static String STREAM_API = "http://droidcon.evonove.it/api/tweets/?";
 
     public JSONArray getTwitterStream(long lastFetchedId) {
         JSONArray twitterTimeline = new JSONArray();
@@ -37,7 +36,9 @@ public class TwitterReceiver {
             int statusCode = twitterConnector.get();
 
             if (statusCode == HttpURLConnection.HTTP_OK) {
-                twitterTimeline = new JSONObject(twitterConnector.getResponse()).getJSONArray("statuses");
+                twitterTimeline = new JSONArray(twitterConnector.getResponse());
+            } else {
+                Log.e(TAG_LOG, String.valueOf(statusCode));
             }
 
             // Close connection
@@ -60,7 +61,7 @@ public class TwitterReceiver {
 
     private String buildQuery(long lastFetchedId) {
         List<BasicNameValuePair> parameters = Arrays.asList(
-                new BasicNameValuePair("since_id", String.valueOf(lastFetchedId)));
+                new BasicNameValuePair("id", String.valueOf(lastFetchedId)));
 
         return STREAM_API + URLEncodedUtils.format(parameters, "UTF-8");
     }
