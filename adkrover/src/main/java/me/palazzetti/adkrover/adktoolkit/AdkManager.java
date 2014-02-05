@@ -85,21 +85,19 @@ public class AdkManager implements IAdkManager {
 
     @Override
     public String readText() {
-        byte value = -1;
         byte[] buffer = new byte[255];
         StringBuilder stringBuilder = new StringBuilder();
 
         try {
             mByteRead = mFileInputStream.read(buffer, 0, buffer.length);
             for (int i = 0; i < mByteRead; i++) {
-                value = buffer[i];
-                //stringBuilder.append((char) buffer[i]);
+                stringBuilder.append((char) buffer[i]);
             }
         } catch (IOException e) {
             Log.e(LOG_TAG, e.getMessage());
         }
 
-        return String.valueOf(value);
+        return stringBuilder.toString();
     }
 
     public boolean serialAvailable() {
