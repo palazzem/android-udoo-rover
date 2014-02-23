@@ -42,7 +42,7 @@ Change log
 ~~~~~
 
 * Removed Twitter endpoint and OAuth2 flow
-* Tweets fetch is done using an external customized endpoint which caches mentions using Twitter Streaming API (it's very fast)
+* Tweets fetch is done using an external `customized <https://github.com/masci/droidcon2014>`_ endpoint which caches mentions using Twitter Streaming API (it's very fast).
 
 0.1.0
 ~~~~~
