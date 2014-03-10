@@ -4,26 +4,36 @@ Android UDOO rover
 
 Android app with ADK support to send/receive commands to/from Arduino rover with MC33926 motor shield. Powered by UDOO prototyping board.
 
+External dependencies
+---------------------
+
+* `ADK toolkit`_ (Gradle/Maven)
+
 Arduino compatibility
 ---------------------
 
 This Android application uses ``ADK 2012`` to communicate with an enabled ADK Arduino.
-Using Android UI you can send serial commands to Arduino so it can pilot a motor driver to change direction and set speed to DC motors.
-It uses `ADK toolkit` library to wrap standard ADK features. You can find a compatible Arduino sketch in this ììì
+Arduino receives serial commands from Android app to pilot a motor driver.
+It uses `ADK toolkit`_ library to wrap standard ADK features.
 
-.. ADK toolkit: github.com/palazzem/adk-toolkit
+An `Arduino sketch`_ is available.
 
-Documentation
--------------
+.. _ADK toolkit: https://github.com/palazzem/adk-toolkit
+.. _Arduino sketch: https://github.com/palazzem/arduino-udoo-rover
+
+Features
+--------
 
 Compatible rover can be controlled using two main components:
 
 * a direction controller which sends serial commands to any ADK compatible devices;
 * a ``SeekBar`` to control how much power is sent by motor driver to DC motors.
 
-**NOTE**: the ``SeekBar`` has a lower and upper limit [0, 400]. However in this application there aren't any controls to avoid motor damage.
- All damage protection checks are made by Arduino sketch so you can safely deploy and edit this application without any fear
- to damage your Arduino or motor.
+Damage protection
+-----------------
+
+``SeekBar`` component has a lower and upper bound [0, 400]. However, in this application, there aren't any checks to avoid motor damage.
+Motor protection is realized by `Arduino sketch`_.
 
 Twitter commands
 ----------------
@@ -37,6 +47,12 @@ Tweet fetch is not enabled when activity starts.
 
 Change log
 ----------
+
+0.2.1
+~~~~~
+
+* Updates Gradle plugin
+* Includes `ADK Toolkit`_ library
 
 0.2.0
 ~~~~~
