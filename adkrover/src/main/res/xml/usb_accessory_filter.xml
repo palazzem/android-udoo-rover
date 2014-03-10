@@ -3,7 +3,7 @@
 
     <usb-accessory
         version="0.1.0"
-        model="UDOO-Silkworm"
+        model="UDOO-Rover"
         manufacturer="Example, Inc."/>
 
 </resources>
