@@ -19,7 +19,7 @@ import org.json.JSONException;
 
 import java.util.List;
 
-import me.palazzetti.adkrover.adktoolkit.AdkManager;
+import me.palazzetti.adktoolkit.AdkManager;
 import me.palazzetti.adkrover.arduino.Arduino;
 import me.palazzetti.adkrover.twitter.TwitterParser;
 import me.palazzetti.adkrover.twitter.TwitterReceiver;

@@ -1,6 +1,6 @@
 package me.palazzetti.adkrover.arduino;
 
-import me.palazzetti.adkrover.adktoolkit.AdkManager;
+import me.palazzetti.adktoolkit.AdkManager;
 
 public class Arduino {
 
