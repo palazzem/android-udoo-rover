@@ -48,6 +48,11 @@ Tweet fetch is not enabled when activity starts.
 Change log
 ----------
 
+0.2.2
+~~~~~
+
+* Updated ADK Toolkit to 0.2.0
+
 0.2.1
 ~~~~~
 
