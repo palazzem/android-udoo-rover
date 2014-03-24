@@ -22,6 +22,6 @@ public class Arduino {
      */
 
     public static void executeCommand(AdkManager adkManager, String serialCommand) {
-        adkManager.sendText(serialCommand);
+        adkManager.writeSerial(serialCommand);
     }
 }

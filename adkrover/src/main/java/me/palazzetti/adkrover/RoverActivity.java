@@ -76,13 +76,13 @@ public class RoverActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        mAdkManager.closeAdk();
+        mAdkManager.close();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mAdkManager.resumeAdk();
+        mAdkManager.open();
     }
 
     @Override
@@ -177,7 +177,7 @@ public class RoverActivity extends Activity {
                         publishProgress(getResources().getString(R.string.start_execution));
                         for (String serialCommand : serialCommandsList) {
                             Log.d(TAG_LOG, "Executing: " + serialCommand);
-                            mAdkManager.sendText(serialCommand);
+                            mAdkManager.writeSerial(serialCommand);
                         }
                     }
 
