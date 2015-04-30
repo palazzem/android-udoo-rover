@@ -25,8 +25,10 @@ Features
 Compatible rovers can be controlled using the following approaches:
 
 * GUI manual mode: through a directional PAD and a ``SeekBar`` that controls DC motors power
+* Myo manual mode: the rover could be controlled using a `Myo armband`_
 * Twitter mode: reading the `@DroidRover`_ mentions, that are turned in Arduino commands
 
+.. _Myo armband: https://www.thalmic.com/en/myo/
 .. _@DroidRover: https://twitter.com/droidrover
 
 Damage protection
@@ -47,8 +49,24 @@ Arduino command that is sent via the AOA protocol.
 You can enable and disable this behavior clicking the ``Enable twitter commands`` button.
 Tweets fetching isn't enabled by default.
 
+Myo Armband
+-----------
+
+The options menu provides the ``Myo pairing`` action that opens the built-in ``ScanActivity`` to
+connect the armband. After the connection is established, use the traditional gestures to control
+the rover (``WAVE_IN``, ``WAVE_OUT``, ``FIST``, ``FINGERS_SPREAD``).
+
 Change log
 ----------
+
+0.3.0 [2015-05-01]
+~~~~~~~~~~~~~~~~~~
+
+* Project skeleton updated for Gradle 2.2.1 and Android Studio >=1.0.0
+* ADK Toolkit updated to version 0.3.0
+* Created the ``Rover`` class to manage the controlled robot
+* Code style refactoring
+* Added Myo control
 
 0.2.2 [2014-03-24]
 ~~~~~~~~~~~~~~~~~~
