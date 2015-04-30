@@ -40,6 +40,7 @@ public class RoverActivity extends AppCompatActivity {
 
         // Gets the Rover instance
         mRover = new Rover(new AdkManager(this));
+        mRover.turnOn();
 
         // Widget assignment
         mSpeedText = (TextView) findViewById(R.id.speed_text);
@@ -153,7 +154,7 @@ public class RoverActivity extends AppCompatActivity {
                     if (tweets.length() > 0) {
                         // Last tweet is the newest
                         mLastFetchedId = tweets.getJSONObject(0).getLong("tweet_id");
-                        mRover.listen(tweets);
+                        mRover.execute(tweets);
                     }
 
                     // Wait before next polling

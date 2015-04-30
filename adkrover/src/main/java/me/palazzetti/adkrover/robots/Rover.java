@@ -16,16 +16,24 @@ public class Rover {
 
     public Rover(AdkManager manager) {
         this.mADK = manager;
-        manager.open();
     }
 
-    private void execute(String action) {
+    public void turnOn() {
+        this.mADK.open();
+    }
+
+    public void turnOff() {
+        this.mADK.close();
+    }
+
+    public void execute(String action) {
         mADK.write(action);
     }
 
-    private void execute(List<String> actions) {
+    public void execute(JSONArray tweets) {
+        List<String> actions = listen(tweets);
         for (String action : actions) {
-            mADK.write(action);
+            execute(action);
         }
     }
 
@@ -49,7 +57,8 @@ public class Rover {
         execute(command(4, speed));
     }
 
-    public void listen(JSONArray tweets) {
+    public List<String> listen(JSONArray tweets) {
+        // TODO: this method should not be public (visibility only for testing purpose in the middle of a refactoring)
         boolean normalizationRequired = tweets.length() >= Constants.NORMALIZE_LIMIT;
         int lastCommandCounter = 0;
         String action;
@@ -81,10 +90,11 @@ public class Rover {
             }
         }
 
-        execute(actions);
+        return actions;
     }
 
-    private String recognize(String tweet) throws UnrecognizedCommand {
+    public String recognize(String tweet) throws UnrecognizedCommand {
+        // TODO: this method should not be public (visibility only for testing purpose in the middle of a refactoring)
         int action = -1;
         int speed = 0;
 
@@ -94,6 +104,10 @@ public class Rover {
             if (splitTweet.length >= 3) {
                 action = Constants.TWITTER_VERBS.indexOf(splitTweet[1].toLowerCase());
                 speed = Integer.valueOf(splitTweet[2]);
+            }
+
+            if (action == -1 || speed == 0) {
+                throw new UnrecognizedCommand();
             }
         } catch (Exception e) {
             throw new UnrecognizedCommand();
