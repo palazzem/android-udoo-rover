@@ -5,7 +5,6 @@ import org.json.JSONException;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.hardware.usb.UsbManager;
@@ -13,7 +12,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -24,7 +26,7 @@ import me.palazzetti.adkrover.arduino.Arduino;
 import me.palazzetti.adkrover.twitter.TwitterParser;
 import me.palazzetti.adkrover.twitter.TwitterReceiver;
 
-public class RoverActivity extends Activity {
+public class RoverActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "DroidRover";
 
     private AsyncTwitterReceiver mAsyncReceiver = null;
@@ -71,6 +73,23 @@ public class RoverActivity extends Activity {
         // Get last stored values
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         mLastFetchedId = settings.getLong("lastId", 1);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_pairing) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

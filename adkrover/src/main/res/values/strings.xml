@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Android UDOO rover</string>
+    <string name="action_settings">Settings</string>
     <string name="rover_controller">Rover controller</string>
     <string name="rover_modes">Rover modes</string>
     <string name="rover_speed">Speed: </string>

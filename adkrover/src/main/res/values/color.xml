@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <color name="emphasis">#31b6e7</color>
-    <color name="bg_gray">#cecbce</color>
-
+    <color name="teal">#009688</color>
 </resources>
