@@ -50,25 +50,25 @@ Tweets fetching isn't enabled by default.
 Change log
 ----------
 
-0.2.2
-~~~~~
+0.2.2 [2014-03-24]
+~~~~~~~~~~~~~~~~~~
 
 * Updated the ADK Toolkit to 0.2.0
 
-0.2.1
-~~~~~
+0.2.1 [2014-03-10]
+~~~~~~~~~~~~~~~~~~
 
 * Updates Gradle plugin
 * Includes the `ADK Toolkit`_ library
 
-0.2.0
-~~~~~
+0.2.0 [2014-02-05]
+~~~~~~~~~~~~~~~~~~
 
 * Removed Twitter endpoint and OAuth2 flow
 * Tweets fetch is done using an external customized endpoint which caches mentions using Twitter Streaming API
 
-0.1.0
-~~~~~
+0.1.0 [2014-02-02]
+~~~~~~~~~~~~~~~~~~
 
 * Rover direction controller on main Activity
 * Twitter OAuth2 flow implemented to gather the Bearer token
