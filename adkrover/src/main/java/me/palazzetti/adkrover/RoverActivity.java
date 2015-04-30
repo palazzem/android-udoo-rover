@@ -177,7 +177,7 @@ public class RoverActivity extends Activity {
                         publishProgress(getResources().getString(R.string.start_execution));
                         for (String serialCommand : serialCommandsList) {
                             Log.d(TAG_LOG, "Executing: " + serialCommand);
-                            mAdkManager.writeSerial(serialCommand);
+                            mAdkManager.write(serialCommand);
                         }
                     }
 
