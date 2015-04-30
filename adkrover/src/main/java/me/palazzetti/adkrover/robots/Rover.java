@@ -16,6 +16,7 @@ public class Rover {
 
     public Rover(AdkManager manager) {
         this.mADK = manager;
+        manager.open();
     }
 
     private void execute(String action) {
