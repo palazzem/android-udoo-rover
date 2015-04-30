@@ -1,8 +1,8 @@
-package me.palazzetti.adkrover.arduino;
+package me.palazzetti.adkrover.robots;
 
 import me.palazzetti.adktoolkit.AdkManager;
 
-public class Arduino {
+public class Rover {
 
     /**
      * Create a serial command with format DIRECTION-SPEED (D-SSS)
