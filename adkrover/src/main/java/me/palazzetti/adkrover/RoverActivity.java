@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -18,13 +19,20 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.thalmic.myo.Hub;
+import com.thalmic.myo.scanner.ScanActivity;
+
+import me.palazzetti.adkrover.Constants.Actions;
+import me.palazzetti.adkrover.myo.DeviceListener;
+import me.palazzetti.adkrover.myo.GestureRecognition;
 import me.palazzetti.adktoolkit.AdkManager;
 import me.palazzetti.adkrover.robots.Rover;
 import me.palazzetti.adkrover.twitter.TwitterReceiver;
 
-public class RoverActivity extends AppCompatActivity {
+public class RoverActivity extends AppCompatActivity implements GestureRecognition {
     private static final String PREFS_NAME = "DroidRover";
 
+    private Hub mHub;
     private Rover mRover;
     private AsyncTwitterReceiver mAsyncReceiver = null;
     private TextView mSpeedText;
@@ -37,6 +45,9 @@ public class RoverActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rover);
+
+        // it's the cool stuff
+        myoInitialization();
 
         // Gets the Rover instance
         mRover = new Rover(new AdkManager(this));
@@ -81,6 +92,7 @@ public class RoverActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_pairing) {
+            myoPairing();
             return true;
         }
 
@@ -102,6 +114,27 @@ public class RoverActivity extends AppCompatActivity {
         mAsyncReceiver = null;
     }
 
+    private void myoInitialization() {
+        // Hub initialization (manages Myo instances)
+        mHub = Hub.getInstance();
+        boolean status = mHub.init(this);
+
+        // checks Hub initialization (fails if the system doesn't support Bluetooth Low Energy)
+        if (!status) {
+            Toast.makeText(this, "Bluetooth Low Energy not available. Aborting.", Toast.LENGTH_LONG).show();
+        } else {
+            // prevents statistics data to be sent
+            mHub.setSendUsageData(false);
+            mHub.addListener(new DeviceListener(this));
+        }
+    }
+
+    private void myoPairing() {
+        // uses the ScanActivity class to pair the Myo device
+        Intent intent = new Intent(getApplicationContext(), ScanActivity.class);
+        startActivity(intent);
+    }
+
     public void goForward(View v) {
         mRover.forward(mSelectedSpeed);
     }
@@ -116,6 +149,24 @@ public class RoverActivity extends AppCompatActivity {
 
     public void turnRight(View v) {
         mRover.right(mSelectedSpeed);
+    }
+
+    @Override
+    public void onPoseRecognition(Actions action) {
+        switch (action) {
+            case LEFT:
+                mRover.left(200);
+                break;
+            case RIGHT:
+                mRover.right(200);
+                break;
+            case FORWARD:
+                mRover.forward(200);
+                break;
+            case BACKWARD:
+                mRover.back(200);
+                break;
+        }
     }
 
     public void startTwitterCommandsFetch(View v) {
