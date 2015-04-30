@@ -1,23 +1,18 @@
 package me.palazzetti.adkrover.test;
 
+import java.util.List;
+import org.json.JSONArray;
+
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import org.json.JSONArray;
-
-import java.util.List;
-
 import me.palazzetti.adkrover.RoverActivity;
 import me.palazzetti.adkrover.twitter.TwitterParser;
-import me.palazzetti.adkrover.utils.Helpers;
-
-/**
- * Parses a Twitter JSONArray and produce the correct sequence of commands.
- */
+import me.palazzetti.adkrover.utils.Factories;
 
 public class TestTwitterParsing extends ActivityInstrumentationTestCase2<RoverActivity> {
-    private JSONArray tweetList = new JSONArray();
-    private JSONArray tweetListNormalized = new JSONArray();
+    private JSONArray tweetList;
+    private JSONArray tweetListNormalized;
 
     public TestTwitterParsing() {
         super(RoverActivity.class);
@@ -27,40 +22,36 @@ public class TestTwitterParsing extends ActivityInstrumentationTestCase2<RoverAc
     protected void setUp() throws Exception {
         super.setUp();
 
-        // Create some mock tweets
-        tweetList.put(Helpers.createMockTweet("@Username F 100"));
-        tweetList.put(Helpers.createMockTweet("@Username B 200"));
-        tweetList.put(Helpers.createMockTweet("@Username L 300"));
-        tweetList.put(Helpers.createMockTweet("@Username r 400"));
-        tweetList.put(Helpers.createMockTweet("@Username t 0"));
-        tweetList.put(Helpers.createMockTweet("@Username t 50"));
-        tweetList.put(Helpers.createMockTweet("@Username Fake tweet"));
-        tweetList.put(Helpers.createMockTweet("This is a more fake tweet"));
-        tweetList.put(Helpers.createMockTweet("@Username Another 200"));
+        // Creates some mocked tweets
+        tweetList = new JSONArray();
+        tweetList.put(Factories.createTweet("@Username F 100"));
+        tweetList.put(Factories.createTweet("@Username B 200"));
+        tweetList.put(Factories.createTweet("@Username L 300"));
+        tweetList.put(Factories.createTweet("@Username r 400"));
+        tweetList.put(Factories.createTweet("@Username t 0"));
+        tweetList.put(Factories.createTweet("@Username t 50"));
+        tweetList.put(Factories.createTweet("@Username Fake tweet"));
+        tweetList.put(Factories.createTweet("This is a more fake tweet"));
+        tweetList.put(Factories.createTweet("@Username Another 200"));
 
-        // Create some mock tweets which should be normalized
-        tweetListNormalized.put(Helpers.createMockTweet("@Username F 100"));
-        tweetListNormalized.put(Helpers.createMockTweet("@Username F 100"));
-        tweetListNormalized.put(Helpers.createMockTweet("@Username F 100"));
-        tweetListNormalized.put(Helpers.createMockTweet("@Username F 100"));
-        tweetListNormalized.put(Helpers.createMockTweet("@Username F 100"));
-        tweetListNormalized.put(Helpers.createMockTweet("@Username R 400"));
-        tweetListNormalized.put(Helpers.createMockTweet("@Username R 400"));
-        tweetListNormalized.put(Helpers.createMockTweet("@Username F 100"));
-        tweetListNormalized.put(Helpers.createMockTweet("@Username L 300"));
-        tweetListNormalized.put(Helpers.createMockTweet("@Username L 300"));
-        tweetListNormalized.put(Helpers.createMockTweet("@Username L 300"));
-        tweetListNormalized.put(Helpers.createMockTweet("@Username R 400"));
-        tweetListNormalized.put(Helpers.createMockTweet("@Username B 200"));
-        tweetListNormalized.put(Helpers.createMockTweet("@Username B 200"));
-        tweetListNormalized.put(Helpers.createMockTweet("@Username B 200"));
-        tweetListNormalized.put(Helpers.createMockTweet("@Username B 200"));
-    }
-
-    @SmallTest
-    public void testTweetGeneration() {
-        assertEquals(tweetList.length(), 9);
-        assertEquals(tweetListNormalized.length(), 16);
+        // Creates some mocked tweets that should be normalized
+        tweetListNormalized = new JSONArray();
+        tweetListNormalized.put(Factories.createTweet("@Username F 100"));
+        tweetListNormalized.put(Factories.createTweet("@Username F 100"));
+        tweetListNormalized.put(Factories.createTweet("@Username F 100"));
+        tweetListNormalized.put(Factories.createTweet("@Username F 100"));
+        tweetListNormalized.put(Factories.createTweet("@Username F 100"));
+        tweetListNormalized.put(Factories.createTweet("@Username R 400"));
+        tweetListNormalized.put(Factories.createTweet("@Username R 400"));
+        tweetListNormalized.put(Factories.createTweet("@Username F 100"));
+        tweetListNormalized.put(Factories.createTweet("@Username L 300"));
+        tweetListNormalized.put(Factories.createTweet("@Username L 300"));
+        tweetListNormalized.put(Factories.createTweet("@Username L 300"));
+        tweetListNormalized.put(Factories.createTweet("@Username R 400"));
+        tweetListNormalized.put(Factories.createTweet("@Username B 200"));
+        tweetListNormalized.put(Factories.createTweet("@Username B 200"));
+        tweetListNormalized.put(Factories.createTweet("@Username B 200"));
+        tweetListNormalized.put(Factories.createTweet("@Username B 200"));
     }
 
     @SmallTest
