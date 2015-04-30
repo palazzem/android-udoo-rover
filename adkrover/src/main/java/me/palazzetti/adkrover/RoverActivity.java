@@ -1,5 +1,10 @@
 package me.palazzetti.adkrover;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,11 +18,6 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.util.List;
 
 import me.palazzetti.adktoolkit.AdkManager;
 import me.palazzetti.adkrover.arduino.Arduino;
