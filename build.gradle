@@ -10,5 +10,11 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+
+        // Myo SDK is currently not available in JCenter or Maven Center
+        // => using this bad practice (even if I could use a git submodule for dependency loading)
+        maven {
+            url '../lib/myo'
+        }
     }
 }
