@@ -7,10 +7,11 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import me.palazzetti.adkrover.RoverActivity;
-import me.palazzetti.adkrover.twitter.TwitterParser;
+import me.palazzetti.adkrover.robots.Rover;
 import me.palazzetti.adkrover.utils.Factories;
 
 public class TestTwitterParsing extends ActivityInstrumentationTestCase2<RoverActivity> {
+    private Rover mRover;
     private JSONArray tweetList;
     private JSONArray tweetListNormalized;
 
@@ -22,7 +23,9 @@ public class TestTwitterParsing extends ActivityInstrumentationTestCase2<RoverAc
     protected void setUp() throws Exception {
         super.setUp();
 
-        // Creates some mocked tweets
+        mRover = new Rover(null);
+
+        // creates some mocked tweets
         tweetList = new JSONArray();
         tweetList.put(Factories.createTweet("@Username F 100"));
         tweetList.put(Factories.createTweet("@Username B 200"));
@@ -34,7 +37,7 @@ public class TestTwitterParsing extends ActivityInstrumentationTestCase2<RoverAc
         tweetList.put(Factories.createTweet("This is a more fake tweet"));
         tweetList.put(Factories.createTweet("@Username Another 200"));
 
-        // Creates some mocked tweets that should be normalized
+        // creates some mocked tweets that should be normalized
         tweetListNormalized = new JSONArray();
         tweetListNormalized.put(Factories.createTweet("@Username F 100"));
         tweetListNormalized.put(Factories.createTweet("@Username F 100"));
@@ -56,7 +59,7 @@ public class TestTwitterParsing extends ActivityInstrumentationTestCase2<RoverAc
 
     @SmallTest
     public void testTweetsParsing() {
-        List<String> serialCommandsList = TwitterParser.tweetsToCommands(tweetList);
+        List<String> serialCommandsList = mRover.listen(tweetList);
 
         assertEquals(serialCommandsList.size(), 5);
         assertEquals(serialCommandsList.get(0), "0-100");
@@ -68,7 +71,7 @@ public class TestTwitterParsing extends ActivityInstrumentationTestCase2<RoverAc
 
     @SmallTest
     public void testTweetsNormalizingParsing() {
-        List<String> serialCommandsList = TwitterParser.tweetsToCommands(tweetListNormalized);
+        List<String> serialCommandsList = mRover.listen(tweetListNormalized);
 
         assertEquals(serialCommandsList.size(), 13);
     }
