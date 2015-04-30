@@ -1,22 +1,15 @@
-package me.palazzetti.adkrover.utils;
+package me.palazzetti.adkrover.http;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
-
-/**
- * Fast GET/POST connector built on top of HttpURLConnection.
- * It is *NOT* suitable for generic purpose but it's customized for this project.
- */
 
 public class UrlConnector {
     private HttpURLConnection mConnector;
 
-    public UrlConnector(String encodedUrl) throws MalformedURLException, IOException {
+    public UrlConnector(String encodedUrl) throws IOException {
         URL url = new URL(encodedUrl);
         mConnector = (HttpURLConnection) url.openConnection();
         mConnector.setReadTimeout(10000);
@@ -28,7 +21,7 @@ public class UrlConnector {
         mConnector.setRequestProperty(header, content);
     }
 
-    public int get() throws ProtocolException, IOException {
+    public int get() throws IOException {
         mConnector.setRequestMethod("GET");
         mConnector.setDoInput(true);
 
