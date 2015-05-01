@@ -155,16 +155,16 @@ public class RoverActivity extends AppCompatActivity implements GestureRecogniti
     public void onPoseRecognition(Actions action) {
         switch (action) {
             case LEFT:
-                mRover.left(200);
+                mRover.left(Constants.MYO_DEFAULT_SPEED);
                 break;
             case RIGHT:
-                mRover.right(200);
+                mRover.right(Constants.MYO_DEFAULT_SPEED);
                 break;
             case FORWARD:
-                mRover.forward(200);
+                mRover.forward(Constants.MYO_DEFAULT_SPEED);
                 break;
             case BACKWARD:
-                mRover.back(200);
+                mRover.back(Constants.MYO_DEFAULT_SPEED);
                 break;
         }
     }
