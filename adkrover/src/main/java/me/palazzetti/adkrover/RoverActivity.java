@@ -127,6 +127,9 @@ public class RoverActivity extends AppCompatActivity implements GestureRecogniti
             mHub.setSendUsageData(false);
             mHub.addListener(new DeviceListener(this));
         }
+
+        // Initialize the Myo with the most near device (unattended mode)
+        mHub.attachToAdjacentMyo();
     }
 
     private void myoPairing() {
